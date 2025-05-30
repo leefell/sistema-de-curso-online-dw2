@@ -1,5 +1,7 @@
 # Configuração do Ambiente e Instalação - Sistema de Cursos Online
-
+<!---
+https://g.co/gemini/share/bd7c5a03fb04
+-->
 ## Pré-requisitos
 
 * **PHP** (versão >= 8.1, conforme compatibilidade do Laravel utilizado)
@@ -68,10 +70,10 @@
     ```
 
 10. **Compilar os Assets de Frontend (CSS/JS):**
-        ```bash
-        npm run dev
-        ```
-
+    ```bash
+    npm run dev
+    ```
+    
 11. **Iniciar o Servidor de Desenvolvimento Laravel:**
     ```bash
     php artisan serve
