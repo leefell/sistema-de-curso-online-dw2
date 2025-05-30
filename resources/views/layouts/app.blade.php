@@ -6,7 +6,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Sistema de Cursos Online') }}</title>
+    <title>Cursos Online</title>
 
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -25,7 +25,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <i class="bi bi-book-half"></i>
-                    {{ config('app.name', 'Cursos Online') }}
+                    Cursos Online
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -67,7 +67,7 @@
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}"><i class="bi bi-person-plus-fill"></i> {{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}"><i class="bi bi-person-plus-fill"></i> {{ __('Cadastrar') }}</a>
                                 </li>
                             @endif
                         @else
@@ -130,8 +130,8 @@
         <footer class="bg-light text-center text-lg-start mt-auto py-3 footer-custom">
             <div class="container">
                 <div class="text-center">
-                    © {{ date('Y') }} {{ config('app.name', 'Sistema de Cursos Online') }}.
-                    <p class="mb-0">Desenvolvido com <i class="bi bi-heart-fill text-danger"></i> e Laravel.</p>
+                    © {{ date('Y') }} Cursos Online
+                    <p class="mb-0">Desenvolvido por Alexandre Augusto & Guilherme Grigolin</p>
                 </div>
             </div>
         </footer>
