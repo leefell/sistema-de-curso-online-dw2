@@ -15,7 +15,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home'); // Ou aponte pa
 Route::resource('cursos', CursoController::class);
 
 // Rotas para Inscrições (todas protegidas por autenticação, conforme definido no controller)
-Route::resource('inscricoes', InscricaoController::class)->middleware('auth'); // Dupla garantia
+Route::resource(
+    'inscricoes',
+    InscricaoController::class,
+)->middleware('auth')->parameters(['inscricoes' => 'inscricao']); // Corrije o erro de pluralização de Inscrições
 
 // Exemplo de rota pública para listar cursos, caso não queira usar /cursos como home
 Route::get('/catalogo-cursos', [CursoController::class, 'index'])->name('cursos.public.index');
