@@ -1,80 +1,82 @@
+
 # Configuração do Ambiente e Instalação - Sistema de Cursos Online
-<!---
-https://g.co/gemini/share/bd7c5a03fb04
--->
+
 ## Pré-requisitos
 
-* **PHP** (versão >= 8.1, conforme compatibilidade do Laravel utilizado)
+* **PHP** (versão **>= 8.2**)
 * **Composer** (gerenciador de dependências para PHP)
-* **Node.js** e **NPM** (ou Yarn) (para dependências de frontend e compilação de assets)
+* **Node.js** e **NPM** (para dependências de frontend e compilação de assets)
 * **PostgreSQL** (servidor de banco de dados)
 * **Git** (para clonar o repositório)
+* **Apache2** (servidor web usado em produção)
 
 ## Passos para Instalação
 
-1.  **Clonar o Repositório:**
+1. **Clonar o Repositório:**
+   ```bash
+   git clone https://github.com/leefell/sistema-de-curso-online-dw2.git
+   cd sistema-de-curso-online-dw2
+   ```
+
+2. **Instalar Dependências PHP:**
+   ```bash
+   composer install
+   ```
+
+3. **Instalar Dependências Frontend:**
+   ```bash
+   npm install
+   ```
+
+4. **Copiar o arquivo `.env` e configurar:**
+   ```bash
+   cp .env.example .env
+   ```
+
+5. **Gerar a chave da aplicação:**
+   ```bash
+   php artisan key:generate
+   ```
+
+6. **Configurar o banco de dados no arquivo `.env`:**
+   ```env
+   DB_CONNECTION=pgsql
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_DATABASE=sistemacursos
+   DB_USERNAME=postgres
+   DB_PASSWORD=postdba
+   ```
+
+7. **Criar o banco no PostgreSQL:**
+   ```sql
+   CREATE DATABASE sistemacursos;
+   ```
+
+8. **Executar as migrations:**
+   ```bash
+   php artisan migrate --force
+   ```
+
+9. **Criar link simbólico para arquivos públicos do storage:**
+   ```bash
+   php artisan storage:link
+   ```
+
+10. **Compilar os assets de frontend:**
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO_GIT> sistema-cursos-online
+    npm run build
     ```
 
-2.  **Navegar para o Diretório do Projeto:**
+11. **Permissões (necessário em ambiente Linux):**
     ```bash
-    cd sistema-cursos-online
+    sudo chown -R www-data:www-data storage/ bootstrap/cache
+    sudo chmod -R 775 storage/ bootstrap/cache
     ```
 
-3.  **Instalar Dependências do PHP (Composer):**
-    ```bash
-    composer install
-    ```
+## Considerações para Produção (ex: EC2 com Apache)
 
-4.  **Instalar Dependências do Frontend (NPM/Yarn):**
-    ```bash
-    npm install
-    ```
-
-5.  **Configurar o Arquivo de Ambiente (.env):**
-    Copie o arquivo de exemplo `.env.example` para um novo arquivo chamado `.env`. Este arquivo conterá as configurações específicas do seu ambiente.
-    ```bash
-    cp .env.example .env
-    ```
-
-6.  **Gerar a Chave da Aplicação Laravel:**
-    ```bash
-    php artisan key:generate
-    ```
-
-7.  **Configurar o Banco de Dados no Arquivo `.env`:**
-
-    ```env
-    DB_CONNECTION=pgsql
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_DATABASE=sistemacursos
-    DB_USERNAME=postgres
-    DB_PASSWORD=postdba
-    ```
-    * 
-        ```sql
-        CREATE DATABASE sistemacursos;
-        ```
-
-8.  **Executar as Migrations do Banco de Dados:**
-    As migrations criam as tabelas necessárias no seu banco de dados. 
-    ```bash
-    php artisan migrate
-    ```
-
-9.  **Criar o Link Simbólico para o Storage:**
-    ```bash
-    php artisan storage:link
-    ```
-
-10. **Compilar os Assets de Frontend (CSS/JS):**
-    ```bash
-    npm run dev
-    ```
-    
-11. **Iniciar o Servidor de Desenvolvimento Laravel:**
-    ```bash
-    php artisan serve
-    ```
+* Aponte o **DocumentRoot** do Apache para o diretório `public/`.
+* Após reiniciar a máquina, somente o Apache precisa estar rodando.
+* Não é necessário rodar `npm run dev` ou `php artisan serve` em produção.
+* O conteúdo do build frontend (`npm run build`) fica em `public/`, onde o Apache acessa normalmente.
