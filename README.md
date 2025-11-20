@@ -81,32 +81,54 @@
 * Não é necessário rodar `npm run dev` ou `php artisan serve` em produção.
 * O conteúdo do build frontend (`npm run build`) fica em `public/`, onde o Apache acessa normalmente.
 
-## Rodando com Docker
+## Como Rodar o Projeto (Usando Docker)
 
-Como alternativa à instalação manual, você pode usar o Docker para rodar a aplicação em um ambiente containerizado.
+Este projeto utiliza Docker e Docker Compose para facilitar a configuração do ambiente de desenvolvimento local e também para implantação em servidores como EC2.
 
-### Pré-requisitos (Docker)
+### Pré-requisitos
 
-* **Docker Desktop** instalado e em execução.
+*   Certifique-se de ter o Docker e o Docker Compose instalados e em execução em sua máquina.
 
-### Passos para Instalação (Docker)
+### Configuração e Execução
 
-1. **Construir e iniciar os containers:**
-   Após clonar o repositório, rode o comando na raiz do projeto. O Docker irá construir a imagem da aplicação e iniciar os containers do PHP/Apache e do PostgreSQL.
-   ```bash
-   docker-compose up -d --build
-   ```
+Siga os passos abaixo para colocar o projeto em funcionamento:
 
-2. **Gerar a chave da aplicação:**
-   Com os containers em execução, gere a chave de encriptação do Laravel.
-   ```bash
-   docker-compose exec app php artisan key:generate
-   ```
+1.  **Crie o arquivo de ambiente:**
+    ```bash
+    cp .env.example .env
+    ```
+    *O arquivo `.env.example` já está configurado com os padrões do Docker Compose e do PostgreSQL. Você só precisará editar o `APP_URL` e `APP_KEY` após o passo 4.*
 
-3. **Executar as migrations:**
-   Crie as tabelas no banco de dados que está rodando no container do PostgreSQL.
-   ```bash
-   docker-compose exec app php artisan migrate
-   ```
+2.  **Construa as imagens e inicie os serviços:**
+    ```bash
+    docker-compose up -d --build
+    ```
+    Este comando irá construir as imagens Docker e iniciar os contêineres para a aplicação Laravel (Apache/PHP) e o banco de dados PostgreSQL em segundo plano.
 
-Após esses passos, a aplicação estará disponível em **[http://localhost:8000](http://localhost:8000)**.
+3.  **Configure a aplicação Laravel:**
+
+    *   **Gere a chave da aplicação (APP_KEY):**
+        ```bash
+        docker-compose exec app php artisan key:generate
+        ```
+        Este comando é **essencial** para a segurança da sua aplicação e irá preencher `APP_KEY` no seu arquivo `.env`.
+
+    *   **Crie a migração para a tabela de sessões (se necessário):**
+        ```bash
+        docker-compose exec app php artisan session:table
+        ```
+        *Execute este comando apenas se você planeja usar sessões de banco de dados e o Laravel reclamar que a tabela `sessions` não existe. Ele gerará um arquivo de migração para a tabela `sessions`.*
+
+    *   **Execute as migrações do banco de dados:**
+        ```bash
+        docker-compose exec app php artisan migrate
+        ```
+        Este comando criará todas as tabelas necessárias no seu banco de dados, incluindo a tabela de sessões, se ela foi criada no passo anterior.
+
+### Acessar a Aplicação
+
+Após todos os passos acima, sua aplicação estará acessível:
+
+*   **Localmente:** Em seu navegador, vá para `http://localhost`.
+*   **Na AWS EC2:** Acesse o endereço IP público da sua instância EC2. Lembre-se de verificar se o Security Group da sua instância permite tráfego na **porta 80 (HTTP)**.
+
