@@ -113,17 +113,11 @@ Siga os passos abaixo para colocar o projeto em funcionamento:
         ```
         Este comando é **essencial** para a segurança da sua aplicação e irá preencher `APP_KEY` no seu arquivo `.env`.
 
-    *   **Crie a migração para a tabela de sessões (se necessário):**
-        ```bash
-        docker-compose exec app php artisan session:table
-        ```
-        *Execute este comando apenas se você planeja usar sessões de banco de dados e o Laravel reclamar que a tabela `sessions` não existe. Ele gerará um arquivo de migração para a tabela `sessions`.*
-
     *   **Execute as migrações do banco de dados:**
         ```bash
         docker-compose exec app php artisan migrate
         ```
-        Este comando criará todas as tabelas necessárias no seu banco de dados, incluindo a tabela de sessões, se ela foi criada no passo anterior.
+        Este comando criará todas as tabelas necessárias no seu banco de dados.
 
 ### Acessar a Aplicação
 
