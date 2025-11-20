@@ -80,3 +80,33 @@
 * Após reiniciar a máquina, somente o Apache precisa estar rodando.
 * Não é necessário rodar `npm run dev` ou `php artisan serve` em produção.
 * O conteúdo do build frontend (`npm run build`) fica em `public/`, onde o Apache acessa normalmente.
+
+## Rodando com Docker
+
+Como alternativa à instalação manual, você pode usar o Docker para rodar a aplicação em um ambiente containerizado.
+
+### Pré-requisitos (Docker)
+
+* **Docker Desktop** instalado e em execução.
+
+### Passos para Instalação (Docker)
+
+1. **Construir e iniciar os containers:**
+   Após clonar o repositório, rode o comando na raiz do projeto. O Docker irá construir a imagem da aplicação e iniciar os containers do PHP/Apache e do PostgreSQL.
+   ```bash
+   docker-compose up -d --build
+   ```
+
+2. **Gerar a chave da aplicação:**
+   Com os containers em execução, gere a chave de encriptação do Laravel.
+   ```bash
+   docker-compose exec app php artisan key:generate
+   ```
+
+3. **Executar as migrations:**
+   Crie as tabelas no banco de dados que está rodando no container do PostgreSQL.
+   ```bash
+   docker-compose exec app php artisan migrate
+   ```
+
+Após esses passos, a aplicação estará disponível em **[http://localhost:8000](http://localhost:8000)**.

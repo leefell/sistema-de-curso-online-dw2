@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=sistemacursos
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postdba
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sistemacursos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postdba
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db:
+    driver: local
